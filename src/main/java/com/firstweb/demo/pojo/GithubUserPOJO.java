@@ -4,7 +4,7 @@ package com.firstweb.demo.pojo;
  * @author zxx
  * @2019/7/17 9:34
  */
-public class GithubUser {
+public class GithubUserPOJO {
     private String name;
     private long id;
     private String bio;
