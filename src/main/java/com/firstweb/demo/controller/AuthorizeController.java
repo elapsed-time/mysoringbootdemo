@@ -11,7 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 /**
@@ -31,12 +32,12 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;//不影响运行
+    private UserMapper userMapper;//报错但不影响运行
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request) {
+                           HttpServletResponse response) {
         AccessTokenPOJO accessTokenPOJO = new AccessTokenPOJO();//将调用github接口获得到的数据封装，为调用下一个gith接口做准备
         accessTokenPOJO.setCode(code);
         accessTokenPOJO.setRedirect_uri(redirectUri);
@@ -46,15 +47,15 @@ public class AuthorizeController {
         String accessToken = githubprovider.getAccessToken(accessTokenPOJO);
         GithubUserPOJO githubUserPOJO = githubprovider.getUser(accessToken);
         if (githubUserPOJO != null) {
-            //登录成功，有cookie和session并将数据写入到User类，为写入数据库做准备
             User user = new User();
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(githubUserPOJO.getName());
             user.setAccountId(String.valueOf(githubUserPOJO.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
-            userMapper.insert(user);
-            request.getSession().setAttribute("user", githubUserPOJO);
+            userMapper.insert(user);//用写入数据库代替写入session
+            response.addCookie(new Cookie("token", token));//将token写入到cookie
             return "redirect:/";
         } else {
             //登录失败，重新登录
