@@ -6,7 +6,13 @@ GithubProvider:提供第三方请求，并将请求得到的数据进行封装
 ##controller类
 AuthorizeController:Github登录控制  
 IndexController:主界面控制  
+PublishController:发布问题页面控制
 ##model类:数据库中传输数据（模型）
 User:将要传输到user表的数据封装
 ##mapper类
 UserMapper:对user表的操作
+##templates
+index.html:主界面  
+publish.html:问题发布页面  
+##static
+资源文件
