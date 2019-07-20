@@ -9,9 +9,10 @@ QuestionMapper:对question表的操作
 User:将要传输到user表的数据封装
 Question:将要传输到question表的数据封装
 ##pojo类:网络中传输数据
-AccessTokenPOJO：将发送第三方请求时需要的数据进行封装
-GitHubUserPOJO：将第三方请求完成时得到的数据进行封装
+AccessTokenPOJO:将发送第三方请求时需要的数据进行封装
+GitHubUserPOJO:将第三方请求完成时得到的数据进行封装
 QuestionPOJO:将用户的头像与发布的问题数据进行封装
+PagePOJO:将分页的数据进行计算与封装
 ##provider类：提供第三方数据
 GithubProvider:登录时提供第三方请求，并将请求得到的数据进行封装
 ##service：作为中间层来组装多个Mapper获得数据
