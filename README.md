@@ -20,6 +20,7 @@ QuestionService:作为中间层组装UserMapper和QuestionMapper，IndexControll
 ##templates：页面文件
 index.html:主界面  
 publish.html:问题发布页面  
+navigation.html:将导航栏封装，省去每次修改导航栏都要修改所有导航栏页面的麻烦
 ##static：资源文件
 ##application.properties：配置文件
 ##DemoApplication：主函数main()
