@@ -2,6 +2,7 @@
 AuthorizeController:Github登录控制  
 IndexController:主界面控制  
 PublishController:发布问题页面控制
+ProfileController:个人资料页面控制
 ##mapper类：数据库操作
 UserMapper:对user表的操作
 QuestionMapper:对question表的操作
@@ -20,7 +21,8 @@ QuestionService:作为中间层组装UserMapper和QuestionMapper，IndexControll
 ##templates：页面文件
 index.html:主界面  
 publish.html:问题发布页面  
-navigation.html:将导航栏封装，省去每次修改导航栏都要修改所有导航栏页面的麻烦
+navigation.html:将导航栏封装，省去每次修改导航栏都要修改所有导航栏页面的麻烦  
+profile.html:个人资料页面
 ##static：资源文件
 ##application.properties：配置文件
 ##DemoApplication：主函数main()

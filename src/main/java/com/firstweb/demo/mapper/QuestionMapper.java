@@ -22,4 +22,9 @@ public interface QuestionMapper {
 
     @Select("select count(1) from spring.question")
     Integer count();
+
+    @Select("select * from spring.question where creator=#{userId} limit #{pagenum},#{size}")
+    List<Question> listByUserId(@Param(value = "userId") Integer userId, @Param(value = "pagenum") Integer pagenum,@Param(value = "size") Integer size);
+    @Select("select count(1) from spring.question where creator=#{userId}")
+    Integer countByUserId(@Param(value = "userId") Integer userId);
 }

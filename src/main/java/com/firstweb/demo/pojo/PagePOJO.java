@@ -19,21 +19,10 @@ public class PagePOJO {
     private Integer page;//当前页
     private List<Integer> pages = new ArrayList<>();//页码数组
     private Integer totalPage;//总页数
-    public void setPage(Integer totalcount, Integer page, Integer size) {//一共多少条数据，当前页，每页多少条数据
 
+    public void setPage(Integer totalPage, Integer page) {//一共多少条数据，当前页，每页多少条数据
 
-        //计算总页数
-        if (totalcount % size == 0) {
-            totalPage = totalcount / size;
-        } else {
-            totalPage = totalcount / size + 1;
-        }
-        if (page < 1) {
-            page = 1;
-        }
-        if (page > totalPage) {
-            page = totalPage;
-        }
+        this.totalPage = totalPage;
         this.page = page;
         //控制页码显示数
         pages.add(page);//将当前页添加到页码数组中
