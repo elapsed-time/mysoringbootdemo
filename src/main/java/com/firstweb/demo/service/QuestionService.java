@@ -90,4 +90,13 @@ public class QuestionService {
 
         return pagePOJO;
     }
+
+    public QuestionPOJO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        QuestionPOJO questionPOJO = new QuestionPOJO();
+        BeanUtils.copyProperties(question,questionPOJO);
+        User user=userMapper.findbyID(question.getCreator());
+        questionPOJO.setUser(user);
+        return questionPOJO;
+    }
 }

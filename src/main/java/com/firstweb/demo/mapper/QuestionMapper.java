@@ -14,17 +14,19 @@ import java.util.List;
  */
 @Mapper
 public interface QuestionMapper {
-    @Insert("insert into spring.question(title,description,gmt_create,gmt_modified,creator,tag) values(#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
+    @Insert("insert into question(title,description,gmt_create,gmt_modified,creator,tag) values(#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     void create(Question question);
 
-    @Select("select * from spring.question limit #{pagenum},#{size}")
+    @Select("select * from question limit #{pagenum},#{size}")
     List<Question> list(@Param(value = "pagenum") Integer pagenum,@Param(value = "size") Integer size);
 
     @Select("select count(1) from spring.question")
     Integer count();
 
-    @Select("select * from spring.question where creator=#{userId} limit #{pagenum},#{size}")
+    @Select("select * from question where creator=#{userId} limit #{pagenum},#{size}")
     List<Question> listByUserId(@Param(value = "userId") Integer userId, @Param(value = "pagenum") Integer pagenum,@Param(value = "size") Integer size);
-    @Select("select count(1) from spring.question where creator=#{userId}")
+    @Select("select count(1) from question where creator=#{userId}")
     Integer countByUserId(@Param(value = "userId") Integer userId);
+    @Select("select * from question where id=#{id}")
+    Question getById(@Param(value = "id") Integer id);
 }
