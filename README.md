@@ -21,7 +21,8 @@ PagePOJO:将分页的数据进行计算与封装
 ##provider类：提供第三方数据
 GithubProvider:登录时提供第三方请求，并将请求得到的数据进行封装
 ##service：作为中间层来组装多个Mapper获得数据
-QuestionService:作为中间层组装UserMapper和QuestionMapper，IndexController需要QuestionPOJO的数据，这些数据需要两个Mapper的操作
+QuestionService:作为中间层组装UserMapper和QuestionMapper，服务于IndexController  
+UserService:作为中间层为服务于AuthorizeController
 ##templates：页面文件
 index.html:主界面  
 publish.html:问题发布页面  
