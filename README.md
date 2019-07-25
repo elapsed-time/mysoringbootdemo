@@ -1,3 +1,4 @@
+#结构说明：
 ##controller类：逻辑控制器
 AuthorizeController:Github登录控制  
 IndexController:主界面控制  
@@ -7,12 +8,13 @@ QuestionController:问题详情页面控制
 ##interceptor类：过滤器
 SessionInterceptor:对用户登录进行验证  
 WebConfig:控制过滤器的使用页面
-##mapper类：数据库操作
+##mapper类：数据库操作（mybatis自动生成）
 UserMapper:对user表的操作  
 QuestionMapper:对question表的操作
-##model类:数据库中传输数据（模型）
+##model类:数据库中传输数据（模型）（mybatis自动生成）
 User:将要传输到user表的数据封装  
-Question:将要传输到question表的数据封装
+Question:将要传输到question表的数据封装  
+对应的Example文件是mybatis自动生成的，其中包含一个内部静态类 Criteria，利用Criteria我们可以在类中根据自己的需求动态生成sql where字句，不用我们自己再修改mapper文件添加或者修改sql语句
 ##pojo类:网络中传输数据
 AccessTokenPOJO:将发送第三方请求时需要的数据进行封装  
 GitHubUserPOJO:将第三方请求完成时得到的数据进行封装  
@@ -30,5 +32,20 @@ navigation.html:将导航栏封装，省去每次修改导航栏都要修改所�
 profile.html:个人资料页面  
 question.html:问题详情页面
 ##static：资源文件
+##db.migration：自动生成数据库的文件
+用的时候将数据库语句写入，然后运行：  
+##mapper：mapper类对应的xml文件，包含各种数据库语句（由mybatis自动生成）
+QuestionMapper.xml:QuestionMapper对应的sql语句  
+UserMapper.xml:UserMapper对应的sql语句  
 ##application.properties：配置文件
 ##DemoApplication：主函数main()
+##generatorConfig.xml:mybatis自动生成文件的配置文件
+用的时候在  
+先打开terminal运行：  
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate  
+DemoApplication中加入注解  
+@MapperScan("com.firstweb.demo.mapper")  
+application.properties中加入：  
+mybatis.type-aliases-package=com.firstweb.demo.model  
+mybatis.mapper-locations=classpath:mapper/*.xml
+##pom.xml：主要描述了项目的maven坐标，依赖关系，开发者需要遵循的规则，缺陷管理系统，组织和licenses，以及其他所有的项目相关因素，是项目级别的配置文件

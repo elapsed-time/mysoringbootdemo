@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="C:\Users\Administrator\.m2\repository\mysql\mysql-connector-java\5.1.43\mysql-connector-java-5.1.43.jar"/>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/spring?useSSL=false"
+                        userId="root"
+                        password="153426">
+        </jdbcConnection>
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.firstweb.demo.model" targetProject="src/main/java"><!--生成model位置-->
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" /><!--空格控制-->
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources"><!--.xml文件位置-->
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.firstweb.demo.mapper"  targetProject="src/main/java"><!--.xml文件对应的mapper位置-->
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table schema="spring" tableName="user" domainObjectName="User" ></table>
+        <table schema="spring" tableName="question" domainObjectName="Question" ></table>
+
+    </context>
+</generatorConfiguration>

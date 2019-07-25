@@ -3,9 +3,11 @@ package com.firstweb.demo.service;
 import com.firstweb.demo.mapper.QuestionMapper;
 import com.firstweb.demo.mapper.UserMapper;
 import com.firstweb.demo.model.Question;
+import com.firstweb.demo.model.QuestionExample;
 import com.firstweb.demo.model.User;
 import com.firstweb.demo.pojo.PagePOJO;
 import com.firstweb.demo.pojo.QuestionPOJO;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class QuestionService {
     public PagePOJO list(Integer page, Integer size) {
         PagePOJO pagePOJO = new PagePOJO();
         Integer totalPage;
-        Integer totalcount = questionMapper.count();//查询总数据
+        Integer totalcount = (int)questionMapper.countByExample(new QuestionExample());//查询总数据
         //计算总页数
         if (totalcount % size == 0) {
             totalPage = totalcount / size;
@@ -43,11 +45,11 @@ public class QuestionService {
         }
         pagePOJO.setPage(totalPage, page);
         Integer pagenum = size * (page - 1);//将页码转换为偏移数
-        List<Question> questions = questionMapper.list(pagenum, size);//查询分页
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(pagenum, size));//查询分页
         List<QuestionPOJO> questionPOJOList = new ArrayList<>();
 
         for (Question question : questions) {//将问题数据存入list
-            User user = userMapper.findbyID(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionPOJO questionPOJO = new QuestionPOJO();
             BeanUtils.copyProperties(question, questionPOJO);
             questionPOJO.setUser(user);
@@ -61,7 +63,9 @@ public class QuestionService {
     public PagePOJO list(Integer userId, Integer page, Integer size) {
         PagePOJO pagePOJO = new PagePOJO();
         Integer totalPage;
-        Integer totalcount = questionMapper.countByUserId(userId);//查询总数据
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(userId);
+        Integer totalcount = (int)questionMapper.countByExample(questionExample);//查询总数据
         //计算总页数
         if (totalcount % size == 0) {
             totalPage = totalcount / size;
@@ -76,11 +80,13 @@ public class QuestionService {
         }
         pagePOJO.setPage(totalPage, page);
         Integer pagenum = size * (page - 1);//将页码转换为偏移数
-        List<Question> questions = questionMapper.listByUserId(userId,pagenum, size);//查询分页
+        QuestionExample example = new QuestionExample();
+        example.createCriteria().andCreatorEqualTo(userId);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(pagenum, size));//查询分页
         List<QuestionPOJO> questionPOJOList = new ArrayList<>();
 
         for (Question question : questions) {//将问题数据存入list
-            User user = userMapper.findbyID(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionPOJO questionPOJO = new QuestionPOJO();
             BeanUtils.copyProperties(question, questionPOJO);
             questionPOJO.setUser(user);
@@ -92,10 +98,10 @@ public class QuestionService {
     }
 
     public QuestionPOJO getById(Integer id) {
-        Question question = questionMapper.getById(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         QuestionPOJO questionPOJO = new QuestionPOJO();
         BeanUtils.copyProperties(question,questionPOJO);
-        User user=userMapper.findbyID(question.getCreator());
+        User user=userMapper.selectByPrimaryKey(question.getCreator());
         questionPOJO.setUser(user);
         return questionPOJO;
     }
@@ -105,11 +111,18 @@ public class QuestionService {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.create(question);
+            questionMapper.insert(question);
         }else {
             //更新
-            question.setGmtModified(question.getGmtCreate());
-            questionMapper.update(question);
+
+            Question updatequestion = new Question();
+            updatequestion.setGmtModified(System.currentTimeMillis());
+            updatequestion.setTitle(question.getTitle());
+            updatequestion.setDescription(question.getDescription());
+            updatequestion.setTag(question.getTag());
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(updatequestion, example);
         }
     }
 }
