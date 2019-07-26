@@ -1,10 +1,17 @@
 #结构说明：
+##advice：获取异常，显示到异常页面
+CustomizeException:获取message，显示到error.html
 ##controller类：逻辑控制器
 AuthorizeController:Github登录控制  
+CustomizeErrorController:全局异常处理控制  
 IndexController:主界面控制  
 PublishController:发布问题页面控制  
 ProfileController:个人资料页面控制  
 QuestionController:问题详情页面控制
+##exception：自定义异常信息
+CustomizeErrorCode:枚举错误code（定义不同业务层次的code，不能将所有的都放在一起）  
+CustomizeException:获取异常message  
+ICustomizeErrorCode:以引用的形式传递给CustomizeException
 ##interceptor类：过滤器
 SessionInterceptor:对用户登录进行验证  
 WebConfig:控制过滤器的使用页面
@@ -30,10 +37,12 @@ index.html:主界面
 publish.html:问题发布页面  
 navigation.html:将导航栏封装，省去每次修改导航栏都要修改所有含有导航栏页面的麻烦  
 profile.html:个人资料页面  
-question.html:问题详情页面
+question.html:问题详情页面  
+error.html:错误信息提示页面
 ##static：资源文件
 ##db.migration：自动生成数据库的文件
 用的时候将数据库语句写入，然后运行：  
+mvn flyway:migrate
 ##mapper：mapper类对应的xml文件，包含各种数据库语句（由mybatis自动生成）
 QuestionMapper.xml:QuestionMapper对应的sql语句  
 UserMapper.xml:UserMapper对应的sql语句  

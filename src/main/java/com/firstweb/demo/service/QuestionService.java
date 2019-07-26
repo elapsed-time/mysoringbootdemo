@@ -1,5 +1,7 @@
 package com.firstweb.demo.service;
 
+import com.firstweb.demo.exception.CustomizeErrorCode;
+import com.firstweb.demo.exception.CustomizeException;
 import com.firstweb.demo.mapper.QuestionMapper;
 import com.firstweb.demo.mapper.UserMapper;
 import com.firstweb.demo.model.Question;
@@ -30,7 +32,7 @@ public class QuestionService {
     public PagePOJO list(Integer page, Integer size) {
         PagePOJO pagePOJO = new PagePOJO();
         Integer totalPage;
-        Integer totalcount = (int)questionMapper.countByExample(new QuestionExample());//查询总数据
+        Integer totalcount = (int) questionMapper.countByExample(new QuestionExample());//查询总数据
         //计算总页数
         if (totalcount % size == 0) {
             totalPage = totalcount / size;
@@ -45,7 +47,7 @@ public class QuestionService {
         }
         pagePOJO.setPage(totalPage, page);
         Integer pagenum = size * (page - 1);//将页码转换为偏移数
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(pagenum, size));//查询分页
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(pagenum, size));//查询分页
         List<QuestionPOJO> questionPOJOList = new ArrayList<>();
 
         for (Question question : questions) {//将问题数据存入list
@@ -65,7 +67,7 @@ public class QuestionService {
         Integer totalPage;
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
-        Integer totalcount = (int)questionMapper.countByExample(questionExample);//查询总数据
+        Integer totalcount = (int) questionMapper.countByExample(questionExample);//查询总数据
         //计算总页数
         if (totalcount % size == 0) {
             totalPage = totalcount / size;
@@ -82,7 +84,7 @@ public class QuestionService {
         Integer pagenum = size * (page - 1);//将页码转换为偏移数
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(pagenum, size));//查询分页
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(pagenum, size));//查询分页
         List<QuestionPOJO> questionPOJOList = new ArrayList<>();
 
         for (Question question : questions) {//将问题数据存入list
@@ -99,20 +101,23 @@ public class QuestionService {
 
     public QuestionPOJO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionPOJO questionPOJO = new QuestionPOJO();
-        BeanUtils.copyProperties(question,questionPOJO);
-        User user=userMapper.selectByPrimaryKey(question.getCreator());
+        BeanUtils.copyProperties(question, questionPOJO);
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionPOJO.setUser(user);
         return questionPOJO;
     }
 
     public void createOrUpdate(Question question) {
-        if (question.getId()==null){
+        if (question.getId() == null) {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insert(question);
-        }else {
+        } else {
             //更新
 
             Question updatequestion = new Question();
@@ -122,7 +127,10 @@ public class QuestionService {
             updatequestion.setTag(question.getTag());
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updatequestion, example);
+            int updated = questionMapper.updateByExampleSelective(updatequestion, example);
+            if (updated != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }

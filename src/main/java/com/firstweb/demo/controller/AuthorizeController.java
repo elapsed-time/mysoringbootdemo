@@ -53,6 +53,7 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUserPOJO.getName());
             user.setAccountId(String.valueOf(githubUserPOJO.getId()));
+            user.setBio(githubUserPOJO.getBio());
             user.setAvatarUrl(githubUserPOJO.getAvatar_url());
             userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));//将token写入到cookie

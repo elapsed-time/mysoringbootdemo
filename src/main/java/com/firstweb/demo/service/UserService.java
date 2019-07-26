@@ -34,6 +34,7 @@ public class UserService {
             updateuser.setToken(user.getToken());
             updateuser.setName(user.getName());
             updateuser.setAvatarUrl(user.getAvatarUrl());
+            updateuser.setBio(user.getBio());
             UserExample example = new UserExample();
             example.createCriteria().andIdEqualTo(dbuser.getId());
             userMapper.updateByExampleSelective(updateuser, example);
