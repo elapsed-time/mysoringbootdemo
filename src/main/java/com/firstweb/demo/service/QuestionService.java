@@ -2,6 +2,7 @@ package com.firstweb.demo.service;
 
 import com.firstweb.demo.exception.CustomizeErrorCode;
 import com.firstweb.demo.exception.CustomizeException;
+import com.firstweb.demo.mapper.QuestionExtMapper;
 import com.firstweb.demo.mapper.QuestionMapper;
 import com.firstweb.demo.mapper.UserMapper;
 import com.firstweb.demo.model.Question;
@@ -28,7 +29,8 @@ public class QuestionService {
     private UserMapper userMapper;//报错但不影响运行
     @Autowired
     private QuestionMapper questionMapper;
-
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     public PagePOJO list(Integer page, Integer size) {
         PagePOJO pagePOJO = new PagePOJO();
         Integer totalPage;
@@ -116,6 +118,9 @@ public class QuestionService {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setLikeCount(0);
+            question.setViewCount(0);
+            question.setCommentCount(0);
             questionMapper.insert(question);
         } else {
             //更新
@@ -132,5 +137,12 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void intView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

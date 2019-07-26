@@ -20,6 +20,8 @@ public class QuestionController {
     public String question(@PathVariable(name = "id")Integer id,
                            Model model){
         QuestionPOJO questionPOJO=questionService.getById(id);
+        //累加阅读数
+        questionService.intView(id);
         model.addAttribute("question",questionPOJO);
         return "question";
     }

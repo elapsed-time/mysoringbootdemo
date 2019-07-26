@@ -7,7 +7,8 @@ CustomizeErrorController:全局异常处理控制
 IndexController:主界面控制  
 PublishController:发布问题页面控制  
 ProfileController:个人资料页面控制  
-QuestionController:问题详情页面控制
+QuestionController:问题详情页面控制  
+CommentController:评论回复页面控制  
 ##exception：自定义异常信息
 CustomizeErrorCode:枚举错误code（定义不同业务层次的code，不能将所有的都放在一起）  
 CustomizeException:获取异常message  
@@ -16,29 +17,33 @@ ICustomizeErrorCode:以引用的形式传递给CustomizeException
 SessionInterceptor:对用户登录进行验证  
 WebConfig:控制过滤器的使用页面
 ##mapper类：数据库操作（mybatis自动生成）
+CommentMapper:对comment表的操作  
 UserMapper:对user表的操作  
-QuestionMapper:对question表的操作
+QuestionMapper:对question表的操作  
+QuestionExtMapper:对question表的操作（QuestionMapp的扩展）  
 ##model类:数据库中传输数据（模型）（mybatis自动生成）
 User:将要传输到user表的数据封装  
 Question:将要传输到question表的数据封装  
-对应的Example文件是mybatis自动生成的，其中包含一个内部静态类 Criteria，利用Criteria我们可以在类中根据自己的需求动态生成sql where字句，不用我们自己再修改mapper文件添加或者修改sql语句
+Comment:对要传输到comment表的数据封装  
+对应的Example文件是mybatis自动生成的，其中包含一个内部静态类 Criteria，利用Criteria我们可以在类中根据自己的需求动态生成sql where字句，不用我们自己再修改mapper文件添加或者修改sql语句  
 ##pojo类:网络中传输数据
 AccessTokenPOJO:将发送第三方请求时需要的数据进行封装  
 GitHubUserPOJO:将第三方请求完成时得到的数据进行封装  
 QuestionPOJO:将用户的头像与发布的问题数据进行封装  
-PagePOJO:将分页的数据进行计算与封装
+PagePOJO:将分页的数据进行计算与封装  
+CommentPOJO:将传入的json型评论数据进行封装  
 ##provider类：提供第三方数据
-GithubProvider:登录时提供第三方请求，并将请求得到的数据进行封装
+GithubProvider:登录时提供第三方请求，并将请求得到的数据进行封装  
 ##service：作为中间层来组装多个Mapper获得数据
 QuestionService:作为中间层组装UserMapper和QuestionMapper，服务于IndexController  
-UserService:作为中间层为服务于AuthorizeController
+UserService:作为中间层为服务于AuthorizeController  
 ##templates：页面文件
 index.html:主界面  
 publish.html:问题发布页面  
 navigation.html:将导航栏封装，省去每次修改导航栏都要修改所有含有导航栏页面的麻烦  
 profile.html:个人资料页面  
 question.html:问题详情页面  
-error.html:错误信息提示页面
+error.html:错误信息提示页面  
 ##static：资源文件
 ##db.migration：自动生成数据库的文件
 用的时候将数据库语句写入，然后运行：  
@@ -46,6 +51,8 @@ mvn flyway:migrate
 ##mapper：mapper类对应的xml文件，包含各种数据库语句（由mybatis自动生成）
 QuestionMapper.xml:QuestionMapper对应的sql语句  
 UserMapper.xml:UserMapper对应的sql语句  
+CommentMapper.xml:CommentMapper对应的sql语句  
+QuestionExtMapper.xml:QuestionExtMapper对应的sql语句  
 ##application.properties：配置文件
 ##DemoApplication：主函数main()
 ##generatorConfig.xml:mybatis自动生成文件的配置文件
@@ -56,5 +63,5 @@ DemoApplication中加入注解
 @MapperScan("com.firstweb.demo.mapper")  
 application.properties中加入：  
 mybatis.type-aliases-package=com.firstweb.demo.model  
-mybatis.mapper-locations=classpath:mapper/*.xml
+mybatis.mapper-locations=classpath:mapper/*.xml  
 ##pom.xml：主要描述了项目的maven坐标，依赖关系，开发者需要遵循的规则，缺陷管理系统，组织和licenses，以及其他所有的项目相关因素，是项目级别的配置文件
