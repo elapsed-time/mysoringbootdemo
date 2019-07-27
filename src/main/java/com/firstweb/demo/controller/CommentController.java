@@ -3,7 +3,7 @@ package com.firstweb.demo.controller;
 import com.firstweb.demo.exception.CustomizeErrorCode;
 import com.firstweb.demo.model.Comment;
 import com.firstweb.demo.model.User;
-import com.firstweb.demo.pojo.CommentPOJO;
+import com.firstweb.demo.pojo.CommentCreatePOJO;
 import com.firstweb.demo.pojo.ResultCodePOJO;
 import com.firstweb.demo.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +24,16 @@ public class CommentController {
     private CommentService commentService;
     @ResponseBody
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
-    public Object post(@RequestBody CommentPOJO commentPOJO,
+    public Object post(@RequestBody CommentCreatePOJO commentCreatePOJO,
                        HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResultCodePOJO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
         Comment comment = new Comment();
-        comment.setParentId(commentPOJO.getParentId());
-        comment.setContent(commentPOJO.getContent());
-        comment.setType(commentPOJO.getType());
+        comment.setParentId(commentCreatePOJO.getParentId());
+        comment.setContent(commentCreatePOJO.getContent());
+        comment.setType(commentCreatePOJO.getType());
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(System.currentTimeMillis());
         comment.setCommentator(user.getId());

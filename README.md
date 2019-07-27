@@ -1,4 +1,5 @@
 #结构说明：
+[java 8 语法](https://www.cnblogs.com/mrhgw/p/9171883.html)  
 ##advice：获取异常，显示到异常页面
 CustomizeException:获取message，显示到error.html
 ##controller类：逻辑控制器
@@ -33,8 +34,9 @@ AccessTokenPOJO:将发送第三方请求时需要的数据进行封装
 GitHubUserPOJO:将第三方请求完成时得到的数据进行封装  
 QuestionPOJO:将用户的头像与发布的问题数据进行封装  
 PagePOJO:将分页的数据进行计算与封装  
-CommentPOJO:将传入的json型评论数据进行封装  
+CommentCreatePOJO:将用户评论时传入的json型数据进行封装  
 ResultCodePOJO:异常数据(code,message)进行封装  
+CommentPOJP:将从数据库得到的该问题的所有回复信息以及回复人信息进行封装
 ##provider类：提供第三方数据
 GithubProvider:登录时提供第三方请求，并将请求得到的数据进行封装  
 ##service：作为中间层来组装多个Mapper获得数据
