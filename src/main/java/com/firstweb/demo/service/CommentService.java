@@ -10,6 +10,7 @@ import com.firstweb.demo.model.Comment;
 import com.firstweb.demo.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zxx
@@ -23,6 +24,7 @@ public class CommentService {
     private QuestionMapper questionMapper;
     @Autowired
     private QuestionExtMapper questionExtMapper;
+    @Transactional//事务注解，让commentMapper.insert(comment);questionExtMapper.incCommentCount(question);同时发生，一个失败则全部回滚
     public void insert(Comment comment) {
         if (comment.getParentId()==null||comment.getParentId()==0){
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
