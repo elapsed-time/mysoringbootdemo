@@ -9,6 +9,8 @@ PublishController:发布问题页面控制
 ProfileController:个人资料页面控制  
 QuestionController:问题详情页面控制  
 CommentController:评论回复页面控制  
+##enums：枚举类，列出所有情况
+CommentTypeEnum:评论类型枚举（问题评论or评论回复）  
 ##exception：自定义异常信息
 CustomizeErrorCode:枚举错误code（定义不同业务层次的code，不能将所有的都放在一起）  
 CustomizeException:获取异常message  
@@ -32,11 +34,13 @@ GitHubUserPOJO:将第三方请求完成时得到的数据进行封装
 QuestionPOJO:将用户的头像与发布的问题数据进行封装  
 PagePOJO:将分页的数据进行计算与封装  
 CommentPOJO:将传入的json型评论数据进行封装  
+ResultCodePOJO:异常数据(code,message)进行封装  
 ##provider类：提供第三方数据
 GithubProvider:登录时提供第三方请求，并将请求得到的数据进行封装  
 ##service：作为中间层来组装多个Mapper获得数据
 QuestionService:作为中间层组装UserMapper和QuestionMapper，服务于IndexController  
 UserService:作为中间层为服务于AuthorizeController  
+CommentService:作为中间层服务于CommentController
 ##templates：页面文件
 index.html:主界面  
 publish.html:问题发布页面  
