@@ -1,6 +1,6 @@
 package com.firstweb.demo.controller;
 
-import com.firstweb.demo.pojo.CommentCreatePOJO;
+import com.firstweb.demo.enums.CommentTypeEnum;
 import com.firstweb.demo.pojo.CommentPOJO;
 import com.firstweb.demo.pojo.QuestionPOJO;
 import com.firstweb.demo.service.CommentService;
@@ -28,7 +28,7 @@ public class QuestionController {
     public String question(@PathVariable(name = "id") long id,
                            Model model) {
         QuestionPOJO questionPOJO = questionService.getById(id);
-        List<CommentPOJO> commentCreatePOJOS = commentService.listByQuestionId(id);
+        List<CommentPOJO> commentCreatePOJOS = commentService.ListByTarget(id, CommentTypeEnum.QUESTION);
         //累加阅读数
         questionService.intView(id);
         model.addAttribute("question", questionPOJO);

@@ -9,10 +9,12 @@ import lombok.Data;
  * @2019/7/26 17:12
  */
 @Data
-public class ResultCodePOJO {
+public class ResultCodePOJO<T> {
     private Integer code;
     private String message;
-    public static ResultCodePOJO errorOf(Integer code,String message){
+    private T data;
+
+    public static ResultCodePOJO errorOf(Integer code, String message) {
         ResultCodePOJO resultCodePOJO = new ResultCodePOJO();
         resultCodePOJO.setCode(code);
         resultCodePOJO.setMessage(message);
@@ -20,16 +22,25 @@ public class ResultCodePOJO {
     }
 
     public static ResultCodePOJO errorOf(CustomizeErrorCode errorCode) {
-        return errorOf(errorCode.getCode(),errorCode.getMessage());
+        return errorOf(errorCode.getCode(), errorCode.getMessage());
     }
-    public static ResultCodePOJO okOf(){
-        ResultCodePOJO resultCodePOJO=new ResultCodePOJO();
+
+    public static ResultCodePOJO okOf() {
+        ResultCodePOJO resultCodePOJO = new ResultCodePOJO();
         resultCodePOJO.setCode(200);
         resultCodePOJO.setMessage("请求成功");
         return resultCodePOJO;
     }
 
     public static Object errorOf(CustomizeException e) {
-        return errorOf(e.getCode(),e.getMessage());
+        return errorOf(e.getCode(), e.getMessage());
+    }
+
+    public static <T> ResultCodePOJO okOf(T t) {
+        ResultCodePOJO resultCodePOJO = new ResultCodePOJO();
+        resultCodePOJO.setCode(200);
+        resultCodePOJO.setMessage("请求成功");
+        resultCodePOJO.setData(t);
+        return resultCodePOJO;
     }
 }

@@ -13,6 +13,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     TARGET_PARAM_NOT_FOUND(214,"没有选择问题或者评论"),
     COMMENT_NOT_FOUNT (215,"你回复的评论不在了，换一个吧"),
     QUESTION_NOT_FOUNT (215,"你回复的问题不在了，换一个吧"),
+    COMMENT_IS_EMPTY (216,"输入内容不能为空"),
     ;
 
     @Override
